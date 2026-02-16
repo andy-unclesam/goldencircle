@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start with WHY – Schulentwicklung mit dem Golden Circle</title>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@200;300;400;500;600;700;800;900&family=SF+Pro+Text:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=DM+Serif+Display&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --blue: #8BADDC;
+  --green: #B7D098;
+  --yellow: #FFE48B;
+  --dark: #0a0a0a;
+  --darker: #050505;
+  --surface: #111113;
+  --surface2: #1a1a1e;
+  --text: #f5f5f7;
+  --text-secondary: rgba(245, 245, 247, 0.6);
+  --text-tertiary: rgba(245, 245, 247, 0.35);
+  --accent-gold: #C9A84C;
+  --accent-warm: #E8915A;
+  --why-color: #D4A843;
+  --how-color: #8BADDC;
+  --what-color: #B7D098;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--darker);
+  font-family: var(--font-body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0;
+  width: 260px; z-index: 100;
+  background: rgba(10, 10, 12, 0.92);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex; flex-direction: column;
+  padding: 32px 0 24px;
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.sidebar-header {
+  padding: 0 24px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 8px;
+}
+
+.sidebar-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--why-color);
+  margin-bottom: 4px;
+}
+
+.sidebar-subtitle {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+}
+
+.nav-chapters {
+  flex: 1; overflow-y: auto;
+  padding: 8px 12px;
+}
+
+.nav-chapters::-webkit-scrollbar { width: 0; }
+
+.nav-chapter {
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.25s ease;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.nav-chapter::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.nav-chapter:hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+}
+
+.nav-chapter.active {
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--why-color);
+  font-weight: 600;
+}
+
+.nav-chapter.active::before {
+  background: var(--why-color);
+  width: 6px; height: 6px;
+  box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
+}
+
+.sidebar-footer {
+  padding: 20px 24px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 8px;
+}
+
+.presenter-name {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.presenter-name strong {
+  display: block;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 2px;
+  font-size: 13px;
+}
+
+/* ─── SLIDE COUNTER & LOGO ─── */
+.top-bar {
+  position: fixed;
+  top: 0; right: 0;
+  left: 260px;
+  height: 60px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 32px;
+  gap: 20px;
+}
+
+.slide-counter {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+}
+
+.slide-counter .current {
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+.logo-container {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logo-container img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* ─── PROGRESS BAR ─── */
+.progress-bar {
+  position: fixed;
+  bottom: 0; left: 260px; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.04);
+  z-index: 90;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--why-color), var(--accent-warm));
+  transition: width 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ─── SLIDES CONTAINER ─── */
+.slides-container {
+  position: fixed;
+  left: 260px; top: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 80px 60px;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+.slide-content {
+  width: 100%;
+  max-width: 1100px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── TYPOGRAPHY ─── */
+.headline-xl {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(42px, 5vw, 68px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.headline-lg {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(32px, 3.5vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.headline-md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(24px, 2.5vw, 38px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: clamp(16px, 1.4vw, 22px);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 680px;
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--why-color);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--why-color), var(--accent-warm));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-blue { color: var(--blue); }
+.text-green { color: var(--green); }
+.text-yellow { color: var(--yellow); }
+.text-gold { color: var(--why-color); }
+
+/* ─── GOLDEN CIRCLE VISUAL ─── */
+.golden-circle-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  width: 100%;
+}
+
+.golden-circle-visual {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  flex-shrink: 0;
+}
+
+.gc-ring {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.gc-what {
+  width: 420px; height: 420px;
+  top: 0; left: 0;
+  background: radial-gradient(circle at center, transparent 60%, rgba(183, 208, 152, 0.08) 100%);
+  border: 2px solid rgba(183, 208, 152, 0.25);
+}
+
+.gc-how {
+  width: 280px; height: 280px;
+  top: 70px; left: 70px;
+  background: radial-gradient(circle at center, transparent 50%, rgba(139, 173, 220, 0.1) 100%);
+  border: 2px solid rgba(139, 173, 220, 0.3);
+}
+
+.gc-why {
+  width: 140px; height: 140px;
+  top: 140px; left: 140px;
+  background: radial-gradient(circle at center, rgba(201, 168, 76, 0.2) 0%, rgba(201, 168, 76, 0.05) 100%);
+  border: 2px solid rgba(201, 168, 76, 0.6);
+  box-shadow: 0 0 40px rgba(201, 168, 76, 0.15), inset 0 0 30px rgba(201, 168, 76, 0.1);
+}
+
+.gc-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.gc-what .gc-label { color: var(--what-color); position: absolute; bottom: 28px; }
+.gc-how .gc-label { color: var(--how-color); position: absolute; bottom: 20px; }
+.gc-why .gc-label { color: var(--why-color); font-size: 22px; }
+
+.gc-annotations {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 400px;
+}
+
+.gc-annotation {
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.3s ease;
+}
+
+.gc-annotation:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.gc-annotation-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.gc-annotation-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ─── COMPARISON LAYOUT ─── */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.comp-card {
+  padding: 36px 32px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.comp-card.negative {
+  background: rgba(255, 59, 48, 0.04);
+  border: 1px solid rgba(255, 59, 48, 0.12);
+}
+
+.comp-card.positive {
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.comp-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.comp-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.comp-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.comp-quote {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.comp-card.negative .comp-quote {
+  background: rgba(255, 59, 48, 0.06);
+  color: rgba(255, 120, 120, 0.9);
+}
+
+.comp-card.positive .comp-quote {
+  background: rgba(201, 168, 76, 0.08);
+  color: var(--why-color);
+}
+
+/* ─── BIG STAT ─── */
+.big-stat {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(80px, 12vw, 160px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* ─── BRAIN VISUAL ─── */
+.brain-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  width: 100%;
+}
+
+.brain-visual {
+  width: 340px;
+  height: 340px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.brain-layer {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.brain-outer {
+  width: 340px; height: 340px;
+  top: 0; left: 0;
+  background: rgba(183, 208, 152, 0.06);
+  border: 2px solid rgba(183, 208, 152, 0.2);
+}
+
+.brain-mid {
+  width: 220px; height: 220px;
+  top: 60px; left: 60px;
+  background: rgba(139, 173, 220, 0.08);
+  border: 2px solid rgba(139, 173, 220, 0.25);
+}
+
+.brain-inner {
+  width: 110px; height: 110px;
+  top: 115px; left: 115px;
+  background: rgba(201, 168, 76, 0.15);
+  border: 2px solid rgba(201, 168, 76, 0.5);
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.1);
+}
+
+.brain-label-main {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.brain-label-sub {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+.brain-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 420px;
+}
+
+.brain-card {
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.brain-card-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.brain-card h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.brain-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ─── DIFFUSION CURVE ─── */
+.diffusion-container {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.diffusion-curve {
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+.diffusion-bar-row {
+  display: flex;
+  align-items: flex-end;
+  height: 140px;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.diff-segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.diff-segment .bar {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.5s ease;
+}
+
+.diff-segment:nth-child(1) { flex: 2.5; }
+.diff-segment:nth-child(1) .bar { height: 40px; background: var(--why-color); }
+
+.diff-segment:nth-child(2) { flex: 13.5; }
+.diff-segment:nth-child(2) .bar { height: 75px; background: var(--accent-warm); }
+
+.diff-segment:nth-child(3) { flex: 34; }
+.diff-segment:nth-child(3) .bar { height: 130px; background: var(--blue); }
+
+.diff-segment:nth-child(4) { flex: 34; }
+.diff-segment:nth-child(4) .bar { height: 100px; background: rgba(139, 173, 220, 0.4); }
+
+.diff-segment:nth-child(5) { flex: 16; }
+.diff-segment:nth-child(5) .bar { height: 45px; background: rgba(255,255,255,0.1); }
+
+.diff-labels {
+  display: flex;
+  gap: 4px;
+}
+
+.diff-label {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  padding-top: 8px;
+}
+
+.diff-label:nth-child(1) { flex: 2.5; color: var(--why-color); }
+.diff-label:nth-child(2) { flex: 13.5; color: var(--accent-warm); }
+.diff-label:nth-child(3) { flex: 34; color: var(--blue); }
+.diff-label:nth-child(4) { flex: 34; }
+.diff-label:nth-child(5) { flex: 16; }
+
+.diff-percent {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tipping-point {
+  position: absolute;
+  left: 17%;
+  top: -10px;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 59, 48, 0.6);
+  z-index: 5;
+}
+
+.tipping-label {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 100, 100, 0.9);
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(255, 59, 48, 0.1);
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+/* ─── QUOTE SLIDE ─── */
+.big-quote {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(28px, 3.5vw, 48px);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  position: relative;
+  padding-left: 40px;
+}
+
+.big-quote::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 4px; bottom: 4px;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--why-color), var(--accent-warm));
+}
+
+.quote-author {
+  margin-top: 24px;
+  padding-left: 40px;
+  font-size: 16px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+/* ─── WRIGHT VS LANGLEY ─── */
+.versus-layout {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.versus-card {
+  padding: 32px 28px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.versus-card.loser {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.versus-card.winner {
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.versus-emoji {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.versus-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.versus-items {
+  list-style: none;
+  text-align: left;
+}
+
+.versus-items li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.versus-items li:last-child { border-bottom: none; }
+
+.versus-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--text-tertiary);
+  padding-top: 80px;
+}
+
+.versus-result {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.versus-card.loser .versus-result {
+  background: rgba(255, 59, 48, 0.08);
+  color: rgba(255, 100, 100, 0.8);
+}
+
+.versus-card.winner .versus-result {
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--why-color);
+}
+
+/* ─── ARROWS ─── */
+.arrow-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.arrow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.arrow-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+
+.arrow-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 120px;
+}
+
+.arrow-connector {
+  font-size: 24px;
+  color: var(--text-tertiary);
+}
+
+/* ─── SCHOOL TRANSFER CARDS ─── */
+.transfer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.transfer-card {
+  padding: 32px 28px;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.transfer-card:hover { transform: translateY(-4px); }
+
+.transfer-card.why-card {
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.transfer-card.how-card {
+  background: rgba(139, 173, 220, 0.06);
+  border: 1px solid rgba(139, 173, 220, 0.15);
+}
+
+.transfer-card.what-card {
+  background: rgba(183, 208, 152, 0.06);
+  border: 1px solid rgba(183, 208, 152, 0.15);
+}
+
+.transfer-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.transfer-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.transfer-subtitle {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+
+.transfer-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── DECORATIVE ─── */
+.slide-bg-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-gold {
+  background: radial-gradient(circle, var(--why-color), transparent);
+}
+
+.glow-blue {
+  background: radial-gradient(circle, var(--blue), transparent);
+}
+
+.glow-warm {
+  background: radial-gradient(circle, var(--accent-warm), transparent);
+}
+
+/* ─── FULLSCREEN BUTTON ─── */
+.fullscreen-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-tertiary);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(20px);
+}
+
+.fullscreen-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+}
+
+/* ─── KEY NAV HINTS ─── */
+.nav-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(calc(-50% + 130px));
+  display: flex;
+  gap: 8px;
+  z-index: 90;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.nav-hint:hover { opacity: 0.8; }
+
+.key-hint {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+/* ─── FADE-IN ANIMATIONS ─── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.slide.active .fade-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+.delay-6 { transition-delay: 0.6s; }
+
+/* ─── MLK SLIDE ─── */
+.dream-plan-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 48px;
+  align-items: start;
+}
+
+.dream-card {
+  padding: 40px 36px;
+  border-radius: 24px;
+  text-align: center;
+}
+
+.dream-card.dream {
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.dream-card.plan {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.dream-card .card-quote {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.dream-card .card-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── SCHOOL WHY EXAMPLES ─── */
+.school-why-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.why-example-row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.why-example {
+  padding: 24px 28px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  flex: 1;
+  max-width: 320px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.why-example:hover {
+  background: rgba(201, 168, 76, 0.05);
+  border-color: rgba(201, 168, 76, 0.15);
+}
+
+.why-example-q {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.why-example-a {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* CTA card */
+.cta-card {
+  margin-top: 48px;
+  padding: 40px 48px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.08) 0%, rgba(232, 145, 90, 0.06) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  text-align: center;
+}
+
+.cta-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.cta-sub {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1100px) {
+  .sidebar { width: 220px; }
+  .slides-container, .top-bar, .progress-bar { left: 220px; }
+  .slide { padding: 80px 48px 60px; }
+  .golden-circle-container, .brain-layout { flex-direction: column; gap: 40px; }
+  .golden-circle-visual, .brain-visual { width: 280px; height: 280px; }
+  .gc-how { width: 190px; height: 190px; top: 45px; left: 45px; }
+  .gc-why { width: 100px; height: 100px; top: 90px; left: 90px; }
+  .brain-outer { width: 280px; height: 280px; }
+  .brain-mid { width: 180px; height: 180px; top: 50px; left: 50px; }
+  .brain-inner { width: 90px; height: 90px; top: 95px; left: 95px; }
+  .versus-layout { grid-template-columns: 1fr; }
+  .versus-divider { display: none; }
+  .transfer-grid { grid-template-columns: 1fr; }
+  .dream-plan-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .slides-container, .top-bar, .progress-bar { left: 0; }
+  .slide { padding: 70px 24px 50px; }
+  .comparison { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">Start with WHY</div>
+    <div class="sidebar-subtitle">Golden Circle für die Schule</div>
+  </div>
+  <div class="nav-chapters" id="navChapters"></div>
+  <div class="sidebar-footer">
+    <div class="presenter-name">
+      Präsentation
+      <strong>Andreas Hemmeter</strong>
+    </div>
+  </div>
+</nav>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="slide-counter">
+    <span class="current" id="currentSlide">1</span> / <span id="totalSlides">16</span>
+  </div>
+  <div class="logo-container">
+    <img src="logo.jpg" alt="GymHip Logo">
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<!-- SLIDES -->
+<div class="slides-container">
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 1: DAS MUSTER -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 1 -->
+  <div class="slide" data-chapter="Das Muster">
+    <div class="slide-bg-glow glow-gold" style="top: -200px; right: -200px;"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">Die zentrale Frage</span>
+      <h1 class="headline-xl fade-up delay-1">
+        Warum sind manche Schulen<br>
+        <span class="gradient-text">inspirierend</span> –<br>
+        und andere nicht?
+      </h1>
+      <p class="subtitle fade-up delay-2" style="margin: 28px auto 0; text-align: center;">
+        Gleiche Lehrpläne. Gleiche Ressourcen. Gleiche Herausforderungen.<br>
+        Und trotzdem ein völlig anderes Ergebnis.
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" data-chapter="Das Muster">
+    <div class="slide-bg-glow glow-warm" style="bottom: -200px; left: -100px;"></div>
+    <div class="slide-content">
+      <span class="label fade-up">Simon Sineks Entdeckung</span>
+      <h2 class="headline-lg fade-up delay-1">
+        Alle inspirierenden Führungspersonen<br>denken, handeln und kommunizieren<br>
+        <span class="gradient-text">auf dieselbe Weise.</span>
+      </h2>
+      <p class="subtitle fade-up delay-2" style="margin-top: 24px;">
+        Ob Apple, Martin Luther King oder die Gebrüder Wright — sie alle folgen einem Muster. Und es ist das komplette Gegenteil von dem, was alle anderen tun.
+      </p>
+      <div class="fade-up delay-3" style="margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap;">
+        <span style="padding: 10px 20px; border-radius: 100px; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); font-size: 14px; font-weight: 600; color: var(--why-color);">🍎 Apple</span>
+        <span style="padding: 10px 20px; border-radius: 100px; background: rgba(139,173,220,0.08); border: 1px solid rgba(139,173,220,0.15); font-size: 14px; font-weight: 600; color: var(--blue);">✊ Martin Luther King</span>
+        <span style="padding: 10px 20px; border-radius: 100px; background: rgba(183,208,152,0.08); border: 1px solid rgba(183,208,152,0.15); font-size: 14px; font-weight: 600; color: var(--green);">✈️ Wright-Brüder</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 2: DER GOLDEN CIRCLE -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 3 -->
+  <div class="slide" data-chapter="Der Golden Circle">
+    <div class="slide-content">
+      <span class="label fade-up">Das Modell</span>
+      <div class="golden-circle-container fade-up delay-1">
+        <div class="golden-circle-visual">
+          <div class="gc-ring gc-what">
+            <span class="gc-label">WAS</span>
+          </div>
+          <div class="gc-ring gc-how">
+            <span class="gc-label">WIE</span>
+          </div>
+          <div class="gc-ring gc-why">
+            <span class="gc-label">WARUM</span>
+          </div>
+        </div>
+        <div class="gc-annotations">
+          <div class="gc-annotation fade-up delay-2">
+            <div class="gc-annotation-title text-green">WAS → 100% wissen es</div>
+            <div class="gc-annotation-text">Jede Schule weiß, was sie tut: Unterricht, Fächer, Abschlüsse.</div>
+          </div>
+          <div class="gc-annotation fade-up delay-3">
+            <div class="gc-annotation-title text-blue">WIE → Einige wissen es</div>
+            <div class="gc-annotation-text">Methoden, Konzepte, Differenzierung — das „Alleinstellungsmerkmal".</div>
+          </div>
+          <div class="gc-annotation fade-up delay-4">
+            <div class="gc-annotation-title text-gold">WARUM → Die wenigsten</div>
+            <div class="gc-annotation-text">Zweck, Überzeugung, Vision. Nicht „Abitur" — sondern wofür.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" data-chapter="Der Golden Circle">
+    <div class="slide-bg-glow glow-gold" style="top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">Die Kernfrage</span>
+      <h1 class="headline-xl fade-up delay-1" style="margin-bottom: 24px;">
+        <span class="gradient-text">WARUM</span> tun Sie,<br>was Sie tun?
+      </h1>
+      <div class="fade-up delay-2" style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+        <div style="padding: 16px 28px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); font-size: 17px; color: var(--text-secondary); max-width: 500px;">
+          Was ist Ihr <strong style="color: var(--text);">Zweck</strong>?
+        </div>
+        <div style="padding: 16px 28px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); font-size: 17px; color: var(--text-secondary); max-width: 500px;">
+          Was wollen Sie <strong style="color: var(--text);">bewirken</strong>?
+        </div>
+        <div style="padding: 16px 28px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); font-size: 17px; color: var(--text-secondary); max-width: 500px;">
+          Warum stehen Sie morgens <strong style="color: var(--text);">auf</strong>?
+        </div>
+        <div style="padding: 16px 28px; border-radius: 14px; background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.2); font-size: 17px; color: var(--why-color); max-width: 500px; font-weight: 600;">
+          Warum sollte sich irgendjemand dafür <strong>interessieren</strong>?
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 3: VON AUSSEN NACH INNEN -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 5 -->
+  <div class="slide" data-chapter="Von außen nach innen">
+    <div class="slide-content">
+      <span class="label fade-up">Das Problem</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 8px;">
+        Die meisten kommunizieren<br><span style="color: var(--text-tertiary);">von außen nach innen.</span>
+      </h2>
+      <div class="comparison fade-up delay-2">
+        <div class="comp-card negative">
+          <div class="comp-icon">🔴</div>
+          <div class="comp-title" style="color: rgba(255, 120, 120, 0.9);">So machen es die meisten</div>
+          <div class="comp-text">WAS → WIE → (WARUM)</div>
+          <div class="comp-quote">
+            „Wir sind ein Gymnasium. Wir haben gute Lehrkräfte und moderne Ausstattung. Schicken Sie Ihr Kind zu uns."
+          </div>
+        </div>
+        <div class="comp-card positive">
+          <div class="comp-icon">🟡</div>
+          <div class="comp-title" style="color: var(--why-color);">So machen es die Inspirierenden</div>
+          <div class="comp-text">WARUM → WIE → WAS</div>
+          <div class="comp-quote">
+            „Wir glauben daran, dass jeder junge Mensch die Welt verändern kann. Deshalb schaffen wir Räume, in denen Neugier und Mut wachsen. Dafür gibt es uns."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide" data-chapter="Von außen nach innen">
+    <div class="slide-bg-glow glow-gold" style="top: -100px; right: -200px;"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">Die Erkenntnis</span>
+      <div class="big-quote fade-up delay-1" style="text-align: left; max-width: 800px; margin: 0 auto;">
+        Menschen kaufen nicht,<br>
+        <span class="gradient-text" style="font-weight: 700;">was</span> Sie tun —<br>
+        sondern <span class="gradient-text" style="font-weight: 700;">warum</span> Sie es tun.
+      </div>
+      <div class="quote-author fade-up delay-2">— Simon Sinek</div>
+      <p class="subtitle fade-up delay-3" style="margin: 32px auto 0; text-align: center; max-width: 600px;">
+        Für Schulen heißt das: Eltern, Schüler und Kollegium folgen nicht dem Lehrplan — sie folgen der Überzeugung.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 4: BIOLOGIE DER ENTSCHEIDUNG -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 7 -->
+  <div class="slide" data-chapter="Biologie der Entscheidung">
+    <div class="slide-content">
+      <span class="label fade-up">Kein Marketing — Biologie</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 12px;">
+        Der Golden Circle entspricht<br>der <span class="gradient-text">Struktur unseres Gehirns.</span>
+      </h2>
+      <div class="brain-layout fade-up delay-2">
+        <div class="brain-visual">
+          <div class="brain-layer brain-outer">
+            <div style="position: absolute; bottom: 24px;">
+              <div class="brain-label-main" style="color: var(--what-color);">Neocortex</div>
+              <div class="brain-label-sub">WAS</div>
+            </div>
+          </div>
+          <div class="brain-layer brain-mid">
+            <div style="position: absolute; bottom: 16px;">
+              <div class="brain-label-main" style="color: var(--how-color);">Limbisch</div>
+              <div class="brain-label-sub">WIE</div>
+            </div>
+          </div>
+          <div class="brain-layer brain-inner">
+            <div class="brain-label-main" style="color: var(--why-color); font-size: 12px;">WARUM</div>
+          </div>
+        </div>
+        <div class="brain-cards">
+          <div class="brain-card">
+            <div class="brain-card-icon">🧠</div>
+            <h4 class="text-green">Neocortex → WAS</h4>
+            <p>Rationales & analytisches Denken. Sprache. Fakten und Daten. Steuert aber <em>nicht</em> das Verhalten.</p>
+          </div>
+          <div class="brain-card">
+            <div class="brain-card-icon">❤️</div>
+            <h4 class="text-blue">Limbisches System → WARUM</h4>
+            <p>Gefühle, Vertrauen, Loyalität. Steuert <strong>alle Entscheidungen</strong> — hat aber keine Sprache.</p>
+          </div>
+          <div class="brain-card" style="background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.15);">
+            <div class="brain-card-icon">💡</div>
+            <h4 class="text-gold">Deshalb: Bauchentscheidungen</h4>
+            <p>„Es fühlt sich nicht richtig an" — weil der entscheidende Hirnbereich nicht für Sprache zuständig ist.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide" data-chapter="Biologie der Entscheidung">
+    <div class="slide-bg-glow glow-blue" style="top: 50%; right: -100px; transform: translateY(-50%);"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">Transfer Schule</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 16px;">
+        Daten überzeugen den <span class="text-green">Neocortex</span>.<br>
+        Überzeugungen bewegen das <span class="text-gold">Herz</span>.
+      </h2>
+      <p class="subtitle fade-up delay-2" style="margin: 0 auto 40px; text-align: center;">
+        Lehrkräfte folgen nicht dem Schulentwicklungsplan —<br>sie folgen einer Vision, an die sie glauben.
+      </p>
+      <div class="comparison fade-up delay-3" style="margin-top: 0;">
+        <div class="comp-card negative" style="text-align: center;">
+          <div style="font-size: 40px; margin-bottom: 12px;">📊</div>
+          <div class="comp-title" style="color: rgba(255, 120, 120, 0.9); font-size: 17px;">Fakten allein</div>
+          <div class="comp-text" style="font-size: 14px;">
+            „Unsere Evaluationsergebnisse zeigen, dass wir in den Bereichen X, Y und Z Handlungsbedarf haben."
+          </div>
+          <div style="margin-top: 16px; font-size: 13px; color: var(--text-tertiary);">→ Verständnis, aber kein Handeln</div>
+        </div>
+        <div class="comp-card positive" style="text-align: center;">
+          <div style="font-size: 40px; margin-bottom: 12px;">🔥</div>
+          <div class="comp-title" style="color: var(--why-color); font-size: 17px;">Vision zuerst</div>
+          <div class="comp-text" style="font-size: 14px;">
+            „Wir wollen, dass jedes Kind diese Schule mit dem Gefühl verlässt, etwas bewirken zu können."
+          </div>
+          <div style="margin-top: 16px; font-size: 13px; color: var(--why-color);">→ Identifikation und Engagement</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 5: ÜBERZEUGUNG SCHLÄGT RESSOURCEN -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 9 -->
+  <div class="slide" data-chapter="Überzeugung schlägt Ressourcen">
+    <div class="slide-content">
+      <span class="label fade-up">Zweck vs. Ergebnis</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 0;">Wer nur für den Scheck arbeitet …</h2>
+      <div class="versus-layout fade-up delay-2">
+        <div class="versus-card loser">
+          <div class="versus-emoji">💰</div>
+          <div class="versus-name">Samuel P. Langley</div>
+          <ul class="versus-items">
+            <li>✅ 50.000 $ vom Kriegsministerium</li>
+            <li>✅ Harvard & Smithsonian</li>
+            <li>✅ Die schlausten Köpfe</li>
+            <li>✅ New York Times folgte ihm</li>
+          </ul>
+          <div class="versus-result">Motivation: Ruhm & Reichtum<br>→ Gab auf, als andere Erste waren</div>
+        </div>
+        <div class="versus-divider">vs.</div>
+        <div class="versus-card winner">
+          <div class="versus-emoji">✈️</div>
+          <div class="versus-name">Wright-Brüder</div>
+          <ul class="versus-items">
+            <li>❌ Kein Kapital</li>
+            <li>❌ Kein College-Abschluss</li>
+            <li>❌ Keine Medienaufmerksamkeit</li>
+            <li>✅ Eine tiefe Überzeugung</li>
+          </ul>
+          <div class="versus-result">Motivation: Die Welt verändern<br>→ 17. Dezember 1903: Erster Flug</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide" data-chapter="Überzeugung schlägt Ressourcen">
+    <div class="slide-bg-glow glow-warm" style="bottom: -200px; left: 30%;"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">Die Lektion für Schulen</span>
+      <div class="big-quote fade-up delay-1" style="text-align: left; max-width: 780px; margin: 0 auto;">
+        Wer Menschen einstellt, die nur einen Job brauchen,<br>bekommt Arbeit für <span style="color: var(--text-tertiary);">Geld</span>.<br><br>
+        Wer Menschen findet, die glauben, was man glaubt,<br>bekommt <span class="gradient-text" style="font-weight: 700;">Blut, Schweiß und Tränen.</span>
+      </div>
+      <div class="quote-author fade-up delay-2">— Simon Sinek</div>
+      <p class="subtitle fade-up delay-3" style="margin: 32px auto 0; text-align: center;">
+        Das gilt für Kollegien genauso wie für Unternehmen.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 6: DIE KLUFT ÜBERQUEREN -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 11 -->
+  <div class="slide" data-chapter="Die Kluft überqueren">
+    <div class="slide-content">
+      <span class="label fade-up">Diffusionstheorie der Innovation</span>
+      <h2 class="headline-md fade-up delay-1">
+        Innovation braucht <span class="gradient-text">die Richtigen</span> — nicht die Mehrheit.
+      </h2>
+      <div class="diffusion-container fade-up delay-2">
+        <div class="diffusion-curve" style="position: relative;">
+          <div class="diffusion-bar-row">
+            <div class="diff-segment"><div class="bar"></div></div>
+            <div class="diff-segment"><div class="bar"></div></div>
+            <div class="diff-segment"><div class="bar"></div></div>
+            <div class="diff-segment"><div class="bar"></div></div>
+            <div class="diff-segment"><div class="bar"></div></div>
+          </div>
+          <div class="tipping-point">
+            <div class="tipping-label">Kipp-Punkt 15–18%</div>
+          </div>
+          <div class="diff-labels">
+            <div class="diff-label"><span class="diff-percent">2,5%</span>Innovatoren</div>
+            <div class="diff-label"><span class="diff-percent">13,5%</span>Frühe<br>Anwender</div>
+            <div class="diff-label"><span class="diff-percent">34%</span>Frühe<br>Mehrheit</div>
+            <div class="diff-label"><span class="diff-percent">34%</span>Späte<br>Mehrheit</div>
+            <div class="diff-label"><span class="diff-percent">16%</span>Nachzügler</div>
+          </div>
+        </div>
+      </div>
+      <p class="subtitle fade-up delay-3" style="margin-top: 28px; max-width: 700px;">
+        Die frühe Mehrheit probiert nichts Neues, bevor es nicht jemand anderes getan hat. 
+        Innovatoren und frühe Anwender handeln aus Überzeugung — nicht weil das Produkt besser ist.
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 12 -->
+  <div class="slide" data-chapter="Die Kluft überqueren">
+    <div class="slide-bg-glow glow-gold" style="top: -100px; left: 20%;"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">Schulentwicklung</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 16px;">
+        Starten Sie nicht mit<br> <span style="color: var(--text-tertiary);">allen</span> — starten Sie mit den<br><span class="gradient-text">Überzeugten.</span>
+      </h2>
+      <p class="subtitle fade-up delay-2" style="margin: 0 auto 36px; text-align: center;">
+        Finden Sie die Lehrkräfte, die Ihre Vision teilen. Sie werden den Rest mitziehen.
+      </p>
+      <div class="arrow-flow fade-up delay-3">
+        <div class="arrow-step">
+          <div class="arrow-circle" style="background: rgba(201,168,76,0.15); border: 2px solid rgba(201,168,76,0.4); color: var(--why-color);">WHY</div>
+          <div class="arrow-desc">Vision klar kommunizieren</div>
+        </div>
+        <div class="arrow-connector">→</div>
+        <div class="arrow-step">
+          <div class="arrow-circle" style="background: rgba(232,145,90,0.1); border: 2px solid rgba(232,145,90,0.3); color: var(--accent-warm);">2,5%</div>
+          <div class="arrow-desc">Innovatoren gewinnen</div>
+        </div>
+        <div class="arrow-connector">→</div>
+        <div class="arrow-step">
+          <div class="arrow-circle" style="background: rgba(139,173,220,0.1); border: 2px solid rgba(139,173,220,0.25); color: var(--blue);">16%</div>
+          <div class="arrow-desc">Kipp-Punkt erreichen</div>
+        </div>
+        <div class="arrow-connector">→</div>
+        <div class="arrow-step">
+          <div class="arrow-circle" style="background: rgba(183,208,152,0.1); border: 2px solid rgba(183,208,152,0.25); color: var(--green);">✓</div>
+          <div class="arrow-desc">Kultur verändert sich</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 7: TRAUM STATT PLAN -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 13 -->
+  <div class="slide" data-chapter="Traum statt Plan">
+    <div class="slide-bg-glow glow-gold" style="top: 20%; left: -100px;"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">250.000 Menschen, kein Flyer</span>
+      <div class="big-stat gradient-text fade-up delay-1">250.000</div>
+      <p class="subtitle fade-up delay-2" style="margin: 16px auto 0; text-align: center;">
+        Menschen kamen 1963 nach Washington — ohne Einladung, ohne Website.
+        Sie kamen nicht für Dr. King. Sie kamen für sich selbst.
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 14 -->
+  <div class="slide" data-chapter="Traum statt Plan">
+    <div class="slide-content">
+      <span class="label fade-up">Die Lektion</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 0;">
+        Er sagte nicht<br>„Ich habe einen <span style="color: var(--text-tertiary);">Plan</span>."
+      </h2>
+      <div class="dream-plan-layout fade-up delay-2">
+        <div class="dream-card dream">
+          <div style="font-size: 48px; margin-bottom: 16px;">✨</div>
+          <div class="card-quote gradient-text">
+            „I have a dream."
+          </div>
+          <div class="card-desc">
+            Eine Vision, die andere spüren konnten. Keine Checkliste, keine Evaluation — ein Bild von einer besseren Welt.
+          </div>
+        </div>
+        <div class="dream-card plan">
+          <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+          <div class="card-quote" style="color: var(--text-tertiary);">
+            „I have a 12-point plan."
+          </div>
+          <div class="card-desc">
+            Pläne informieren. Aber sie inspirieren niemanden, acht Stunden im Bus zu sitzen, um dabei zu sein.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15 -->
+  <div class="slide" data-chapter="Traum statt Plan">
+    <div class="slide-bg-glow glow-warm" style="top: 50%; right: -200px; transform: translateY(-50%);"></div>
+    <div class="slide-content" style="text-align: center;">
+      <span class="label fade-up">Führung in der Schule</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 36px;">
+        Es gibt <span style="color: var(--text-tertiary);">Positionen</span>.<br>
+        Und es gibt <span class="gradient-text">Führung.</span>
+      </h2>
+      <div class="comparison fade-up delay-2" style="margin-top: 0;">
+        <div class="comp-card negative" style="text-align: center;">
+          <div style="font-size: 36px; margin-bottom: 12px;">🪑</div>
+          <div class="comp-title" style="color: var(--text-secondary); font-size: 18px;">In Führungsposition</div>
+          <div class="comp-text">Macht und Autorität. Man folgt, weil man muss.</div>
+        </div>
+        <div class="comp-card positive" style="text-align: center;">
+          <div style="font-size: 36px; margin-bottom: 12px;">🧭</div>
+          <div class="comp-title" style="color: var(--why-color); font-size: 18px;">Wirkliche Führung</div>
+          <div class="comp-text">Inspiration und Überzeugung. Man folgt, weil man will.</div>
+        </div>
+      </div>
+      <p class="subtitle fade-up delay-3" style="margin: 28px auto 0; text-align: center;">
+        Wir folgen nicht um ihretwillen — sondern um unseretwillen.
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHAPTER 8: UNSER WARUM ALS SCHULE -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- SLIDE 16 -->
+  <div class="slide" data-chapter="Unser WARUM als Schule">
+    <div class="slide-content">
+      <span class="label fade-up">Transfer: Schulentwicklung</span>
+      <h2 class="headline-lg fade-up delay-1" style="margin-bottom: 12px;">
+        Der Golden Circle<br><span class="gradient-text">für unsere Schule</span>
+      </h2>
+      <div class="transfer-grid fade-up delay-2">
+        <div class="transfer-card why-card">
+          <div class="transfer-icon">🔥</div>
+          <div class="transfer-title text-gold">WARUM</div>
+          <div class="transfer-subtitle">Unsere Überzeugung</div>
+          <div class="transfer-text">
+            Woran glauben wir? Was ist unser Leitstern? Was treibt uns an — jenseits von Lehrplan und Notengebung?
+          </div>
+        </div>
+        <div class="transfer-card how-card">
+          <div class="transfer-icon">🛠️</div>
+          <div class="transfer-title text-blue">WIE</div>
+          <div class="transfer-subtitle">Unsere Wege</div>
+          <div class="transfer-text">
+            Welche Werte leben wir? Wie unterscheiden wir uns? Methoden, Kultur, Haltung — unser Weg zum Ziel.
+          </div>
+        </div>
+        <div class="transfer-card what-card">
+          <div class="transfer-icon">📚</div>
+          <div class="transfer-title text-green">WAS</div>
+          <div class="transfer-subtitle">Unsere Angebote</div>
+          <div class="transfer-text">
+            Fächer, AGs, Projekte, Ausstattung. Das Sichtbare — aber nur der Beweis für das, woran wir glauben.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17 -->
+  <div class="slide" data-chapter="Unser WARUM als Schule">
+    <div class="slide-content">
+      <span class="label fade-up">Reflexion</span>
+      <h2 class="headline-md fade-up delay-1" style="margin-bottom: 0;">
+        Drei Fragen für Ihr Kollegium
+      </h2>
+      <div class="school-why-visual fade-up delay-2">
+        <div class="why-example-row">
+          <div class="why-example">
+            <div class="why-example-q">Für Ihre Schule</div>
+            <div class="why-example-a">Warum gibt es uns — jenseits des Lehrplans?</div>
+          </div>
+          <div class="why-example">
+            <div class="why-example-q">Für Ihr Team</div>
+            <div class="why-example-a">Welche Lehrkräfte teilen unser WARUM — und können andere mitreißen?</div>
+          </div>
+          <div class="why-example">
+            <div class="why-example-q">Für Ihren Unterricht</div>
+            <div class="why-example-a">Kommuniziere ich den Sinn — oder nur den Stoff?</div>
+          </div>
+        </div>
+      </div>
+      <div class="cta-card fade-up delay-3">
+        <div class="cta-text gradient-text">
+          Wer mit dem WARUM beginnt,<br>inspiriert die, die dasselbe glauben.
+        </div>
+        <div class="cta-sub">
+          Und das verändert alles — auch eine Schule.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end slides-container -->
+
+<!-- FULLSCREEN BUTTON -->
+<button class="fullscreen-btn" onclick="toggleFullscreen()" title="Vollbild">⛶</button>
+
+<!-- NAV HINTS -->
+<div class="nav-hint">
+  <span class="key-hint">← →</span>
+  <span class="key-hint">Pfeiltasten</span>
+</div>
+
+<script>
+// ─── SLIDE ENGINE ───
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let currentIndex = 0;
+
+document.getElementById('totalSlides').textContent = totalSlides;
+
+// Build chapter navigation
+const chapters = [];
+const chapterMap = {};
+slides.forEach((slide, i) => {
+  const ch = slide.dataset.chapter;
+  if (!chapterMap[ch]) {
+    chapterMap[ch] = { name: ch, startIndex: i };
+    chapters.push(chapterMap[ch]);
+  }
+});
+
+const navContainer = document.getElementById('navChapters');
+chapters.forEach((ch, i) => {
+  const el = document.createElement('div');
+  el.className = 'nav-chapter';
+  el.textContent = ch.name;
+  el.addEventListener('click', () => goToSlide(ch.startIndex));
+  navContainer.appendChild(el);
+  ch.navEl = el;
+});
+
+function goToSlide(index) {
+  if (index < 0 || index >= totalSlides || index === currentIndex) return;
+
+  const prev = slides[currentIndex];
+  const next = slides[index];
+
+  // Determine direction
+  const goingForward = index > currentIndex;
+
+  prev.classList.remove('active');
+  prev.classList.add(goingForward ? 'exit-left' : '');
+  prev.style.transform = goingForward ? 'translateX(-60px)' : 'translateX(60px)';
+  prev.style.opacity = '0';
+
+  setTimeout(() => {
+    prev.classList.remove('exit-left');
+    prev.style.transform = '';
+    prev.style.opacity = '';
+  }, 600);
+
+  next.style.transform = goingForward ? 'translateX(60px)' : 'translateX(-60px)';
+  next.style.opacity = '0';
+
+  requestAnimationFrame(() => {
+    next.classList.add('active');
+    requestAnimationFrame(() => {
+      next.style.transform = 'translateX(0)';
+      next.style.opacity = '1';
+    });
+  });
+
+  currentIndex = index;
+  updateUI();
+}
+
+function nextSlide() { goToSlide(currentIndex + 1); }
+function prevSlide() { goToSlide(currentIndex - 1); }
+
+function updateUI() {
+  document.getElementById('currentSlide').textContent = currentIndex + 1;
+
+  // Progress bar
+  const progress = ((currentIndex + 1) / totalSlides) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  // Active chapter
+  const currentChapterName = slides[currentIndex].dataset.chapter;
+  chapters.forEach(ch => {
+    ch.navEl.classList.toggle('active', ch.name === currentChapterName);
+  });
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+  if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+  if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+});
+
+// Touch / swipe
+let touchStartX = 0;
+let touchStartY = 0;
+document.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+  touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].screenX - touchStartX;
+  const dy = e.changedTouches[0].screenY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+    if (dx < 0) nextSlide();
+    else prevSlide();
+  }
+}, { passive: true });
+
+// Fullscreen
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// Initialize
+slides[0].classList.add('active');
+updateUI();
+</script>
+
+</body>
+</html>
